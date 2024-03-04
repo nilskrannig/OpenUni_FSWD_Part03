@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build:ui": "rm -rf dist && cd ../../OpenUni_FSWD_Part02/Part02_Exercises/Part02_thephonebook/ && npm run build && cp -r dist ../../../OpenUni_FSWD_Part03/Part03_Exercises/",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly logs"
   },
   "repository": {
     "type": "git",
