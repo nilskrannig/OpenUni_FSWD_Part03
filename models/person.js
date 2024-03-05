@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
 
-const url = `mongodb+srv://fullstack_helsinki:EwD7UT1ZEAVB6Mtd@helsinkicluster.yapoqta.mongodb.net/phonebook?retryWrites=true&w=majority&appName=HelsinkiCluster`
+const url = process.env.MONGODB_URI
 
 mongoose.connect(url).then(result => {
     console.log('connected to DB phonebook collection');
