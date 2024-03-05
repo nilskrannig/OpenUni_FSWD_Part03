@@ -1,9 +1,12 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 
 app.use(express.json())
 app.use(express.static('dist'))
+
+const Person = require('./models/person')
 
 morgan.token('body', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
@@ -32,14 +35,22 @@ let persons = [
 ]
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(allPersons => {
+    response.json(allPersons)
+  })
 })
 
 app.get('/info', (request, response) => {
-  response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`)
+  Person.find({}).then(allPersons => {
+    response.send(`<p>Phonebook has info for ${allPersons.length} people</p><p>${new Date()}</p>`)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
+  Person.findById(request.params.id).then(person => {
+    response.json(person)
+  })
+
   const id = Number(request.params.id)
   const person = persons.find(person => person.id === id)
 
