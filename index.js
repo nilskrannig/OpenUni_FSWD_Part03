@@ -72,17 +72,16 @@ app.post('/api/persons', (request, response) => {
 
   if (!body.number) return response.status(400).json({ error: 'number missing' })
 
-  if (persons.find(person => person.name === body.name)) return response.status(403).json({ error: 'person already exists' })
+  // if (persons.find(person => person.name === body.name)) return response.status(403).json({ error: 'person already exists' })
 
-  const newPerson = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
-    number: body.number,
-  }
+    number: body.number
+  })
 
-  persons = persons.concat(newPerson)
-
-  response.json(newPerson)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 function generateId() {
