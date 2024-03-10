@@ -20,3 +20,11 @@ body example:
 	"name": "Hans Man",
     "number": "1231243"
 }
+
+PUT
+https://part03-thephonebook.fly.dev/api/persons/:id
+body example: 
+{
+	"name": "Hans Man",
+    "number": "1231243"
+}
