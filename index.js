@@ -54,7 +54,7 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response) => {
-  Person.findByIdAndUpdate(request.params.id, request.body)
+  Person.findByIdAndUpdate(request.params.id, request.body, { new: true })
     .then(updatedPerson => response.json(updatedPerson))
     .catch(error => next(error))
 })
