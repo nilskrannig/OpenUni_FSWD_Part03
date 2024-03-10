@@ -53,6 +53,12 @@ app.post('/api/persons', (request, response, next) => {
     .catch(error => next(error))
 })
 
+app.put('/api/persons/:id', (request, response) => {
+  Person.findByIdAndUpdate(request.params.id, request.body)
+    .then(updatedPerson => response.json(updatedPerson))
+    .catch(error => next(error))
+})
+
 const errorHandler = (error, request, response, next) => {
   console.log(error.message);
 
