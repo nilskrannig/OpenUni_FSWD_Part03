@@ -40,9 +40,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
-  if (!body.name) return response.status(400).json({ error: 'name missing' }).end()
-  if (!body.number) return response.status(400).json({ error: 'number missing' }).end()
-
   const person = new Person({
     name: body.name,
     number: body.number
@@ -54,15 +51,17 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response) => {
-  Person.findByIdAndUpdate(request.params.id, request.body, { new: true })
+  Person.findByIdAndUpdate(request.params.id, request.body, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => response.json(updatedPerson))
     .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
-  console.log(error.message);
-
-  if (error.name === 'CastError') response.status(400).send({ error: 'malformed id' })
+  if (error.name === 'CastError') {
+    response.status(400).send({ error: 'Malformed id.' })
+  } else if (error.name === 'ValidationError') {
+    response.status(400).json({ error: error.message })
+  }
 
   next(error)
 }
